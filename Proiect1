@@ -1,0 +1,632 @@
+
+#include<iostream>
+#include<string>
+#include<conio.h>
+#include<fstream>
+using namespace std;
+
+class Lista;
+class Gradina { //clasa de baza
+private:
+	int tip_derivat;
+	string denumire;
+	int numar;
+	Gradina *urm;
+public:
+	Gradina(int t, string d, int n)
+	{
+		tip_derivat = t;
+		denumire = d;
+		numar = n;
+		urm = NULL;
+	}
+		virtual void afisare()
+		{   
+			cout << "..."<<endl;
+			cout << "Denumirea plantei este:" << denumire << endl;
+			cout << "Numarul de plante este :" << numar << endl;
+		}
+		friend class Lista;
+	
+};
+// clasele derivate cu cele 2 variabile
+
+class Trandafir : public Gradina {
+private:
+	int nr_bulbi;
+	int fire;
+public:
+	Trandafir(int t, string d, int n, int b, int f) :Gradina(t, d, n)
+	{
+		nr_bulbi = b;
+		fire = f;
+	}
+	 void afisare()
+	{
+		Gradina::afisare();
+		
+		cout << " Numarul de bulbi ai unui trandair este : " << nr_bulbi << endl;
+		cout << "Numarul de fire ale unui trandafir : " << fire << endl << endl;
+
+	}
+	friend class Lista;
+
+};
+
+class Crini : public Gradina {
+private:
+	string tip;
+	string culoare;
+public:
+	Crini(int t, string d, int n, string tp, string cul) : Gradina(t, d, n)
+	{
+		tip = tp;
+		culoare = cul;
+	}
+	 void afisare()
+	{
+		Gradina::afisare();
+		cout << " Tipul crinului este ( clasic / imperial) : " << tip << endl;
+		cout << "Culoarea crinului este : " << culoare << endl << endl;
+
+	}
+	friend class Lista;
+ };
+
+class Brad : public Gradina
+{
+private:
+	int ani;
+	int inaltime;
+public :
+	Brad(int t, string d, int n, int an, int i) : Gradina(t, d, n)
+	{
+		ani = an;
+		inaltime = i;
+	}
+	 void afisare()
+	{
+		Gradina::afisare();
+		cout << "Varsta unui brad este : " << ani << endl;
+		cout << "Inaltimea unui brad este : " << inaltime << endl << endl;
+
+	}
+	friend class Lista;
+};
+class Pomi : public Gradina {
+private:
+	string categorie;
+	string origine;
+public:
+	Pomi(int t, string d, int n, string c, string o) : Gradina(t, d, n)
+	{
+		categorie = c;
+		origine = o;
+	}
+	 void afisare()
+	{
+		 Gradina::afisare();
+		
+		cout << "Categoria (mar,par,cires etc) este : " << categorie << endl;
+		cout << "Originea pomului este : " << origine << endl << endl;
+	}
+	friend class Lista;
+};
+// clasa lista 
+class Lista {   
+public:
+
+	Gradina *head;
+	void adaugare(Gradina *g);
+	void citire(Lista &L);
+	void afisare();
+	void afisare_categorie();
+	void stergere( int n);
+	void modificare( string cat);
+	void ordonare();
+	void fisier();
+ };
+// clasa exceptie
+class MyException {
+public:
+	string str_what;
+	int what;
+	MyException() {
+		str_what;
+		what = 0; }
+	MyException(string s, int e) {
+		str_what= s;
+		what = e;
+	}
+};
+//adaugarea unei liste ordonate dupa denumire ( prima ordonare)
+void Lista::adaugare(Gradina *g)
+ {
+	Gradina *p; 
+	p = head; 
+	if (p)
+	{
+		if ((g->denumire < p->denumire))
+		{
+			g->urm = head;
+			head = g;
+		}
+		else
+		{
+			while (p->urm && (p->urm)->denumire < g->denumire)
+		 
+				p = p->urm;
+			g->urm = p->urm;
+			p->urm = g;
+		 
+	  }
+	}
+	else
+		head = g; 
+ }
+void Lista::afisare() 
+{
+	Gradina *g;
+	g = head; //se initializeaza cu capul listei
+	if (!g) 
+		cout << "Lista este vida! \n";
+	else
+		while (g) 
+		{
+			g->afisare(); 
+			g = g->urm; 
+		}
+}
+ //afisarea tuturor claselor pe 2 categorii(flori si arbori)
+void Lista::afisare_categorie()
+{
+	Gradina *el;
+	el = head;//se initializeaza cu capul listei
+	Trandafir *t;
+	Crini *cr;
+	Brad *b;
+	Pomi *p;
+
+	if (!el)
+		cout << "Lista este vida! \n"<<endl;
+	else
+	{
+		cout << " ***** 1.Flori***** " << endl;
+		while (el)
+		{
+			if (el->tip_derivat == 0)
+			{
+				t = (Trandafir*)el;
+				cout << " Denumirea : " << t->denumire << endl;
+				cout << "Numarul de plante : " << t->numar << endl;
+				cout << "Numarul de bulbi : " << t->nr_bulbi << endl;
+				cout << "Cate fire au trandafirii : " << t->fire << endl;
+
+			}
+			else
+			{
+				if (el->tip_derivat == 1)
+				{
+					cr = (Crini *)el;
+					cout << " Denumirea : " << cr->denumire << endl;
+					cout << "Numarul de plante : " << cr->numar << endl;
+					cout << "Tipul crinilor (normali/imperiali) : " << cr->tip << endl;
+					cout << "Culoarea crinilor : " << cr->culoare << endl;
+
+				}
+			}
+			el = el->urm;
+		}
+		el = head;
+
+
+		{
+			cout << "***** 2.Arbori***** " << endl;
+			while (el)
+			{
+				if (el->tip_derivat == 2)
+				{
+					b = (Brad *)el;
+					cout << " Denumirea : " << b->denumire << endl;
+					cout << "Numarul de arbori : " << b->numar << endl;
+					cout << " Cat este de batran bradul " << b->ani << endl;
+					cout << " Cat este de inalt bradul " << b->inaltime << endl;
+
+				}
+				else
+				{
+					if (el->tip_derivat == 3)
+					{
+						p = (Pomi *)el;
+						cout << " Denumirea : " << p->denumire << endl;
+						cout << "Numarul de arbori : " << p->numar << endl;
+						cout << "Catgoria din care face parte : " << p->categorie << endl;
+						cout << " De ce origine este pomul : " << p->origine << endl;
+
+					}
+				}
+				el = el->urm;
+			}
+		}
+	}
+ }
+		
+	
+
+
+//functia de stergere
+void Lista::stergere(int n)
+{
+	Gradina *a, *b;
+	a = head;
+	if ( head ->numar=n )
+	{
+		if (head->tip_derivat == 1)
+		{
+			head->afisare();
+
+		}
+		else
+		{
+			head->afisare();
+		}
+		b = head;
+		head = head->urm;
+		delete b;
+
+	}
+	else
+	{
+		while ( a->urm->numar && a);
+		a = a->urm;
+		b = a->urm;
+		a = a->urm;
+		delete b;void 
+	}
+}
+//supraincarcare
+  class Supraincarcare
+{
+public:
+	string denumire;
+	int numar;
+public:
+	friend ostream & operator <<(ostream &out,Supraincarcare &g );
+	friend istream & operator >>(istream &in, Supraincarcare &g);
+	string get_denumire()
+	{
+		return denumire;
+	}
+	int get_numar()
+	{
+		return numar;
+	}
+};
+ostream &operator <<(ostream & out, Supraincarcare &g ) //operator scriere
+{ 
+	// va fi utilizata pt citirea datelor din clasa de baza( gradina)
+	cout << "Vom citi datele pentru toate plantele din gradina" << endl;
+	cout << endl;
+	return out;
+}
+istream & operator >>(istream &in, Supraincarcare &g) // operator de citire
+// citirea pt citirea datelor specifice clasei de baza
+{
+	cout << "Dati denumirea plantei din gradina ";
+	cin >> g.denumire;
+	cout << "dati numarul de plante din diferite categorii";
+	cin >> g.numar;
+	return in;
+}
+
+void Lista::citire(Lista &L)  //citirea dintr-un fisier
+{
+	Trandafir *t;
+	Crini *cr;
+	Brad *b;
+	Pomi *pm;
+	Gradina *gr;
+	string denum, tp, cul, c, o;
+	int n, bl, f, an, i,x;
+	ifstream fis("gradina.txt");
+	if (fis.is_open())
+	{
+		while (!fis.eof())
+		{
+			fis >> x;
+			if (x == 0)
+			{
+				fis >> denum >> n >> bl >> f;
+				t = new Trandafir(0, denum, n,bl,f );
+				gr = t;
+				L.adaugare(gr);
+			}
+			if (x == 1)
+			{
+				fis >> denum >> n >> tp >> cul;
+				cr = new Crini(1, denum, n, tp, cul);
+				gr = cr;
+				L.adaugare(gr);
+			}
+			if (x == 2)
+			{
+				fis >> denum >> n >> an >> i;
+				b = new Brad(2, denum, n, an, i);
+				gr = b;
+				L.adaugare(gr);
+			}
+			if (x == 3)
+			{
+				fis >> denum >> n >> c >> o;
+				pm = new Pomi(3, denum, n, c, o);
+				gr = pm;
+				L.adaugare(gr);
+			}
+		}
+		if (fis.eof())
+		{
+			cout << "\nDatele au fost incarcate in fisier \n";
+
+		}
+		else
+		{ 
+			cout << "Nu se deschide fisierul ";
+		}
+	}
+}
+// ori introducere ori citire din fisier 
+/**void introducere(Lista &L, int x)
+{    
+	string denumire;
+	int numar;
+	int nr_bulbi;
+	int fire;
+	string tip;
+	string culoare;
+	int ani;
+	int inaltime;
+	string categorie;
+	string origine;
+	Gradina *g;
+	cout << "Dati denumirea";
+	cin >> denumire;
+	cout << "Dati numarul de exemplare";
+	cin >> numar;
+  
+		if (x = 0)
+		{
+			Trandafir *t;
+			cout << "Numarul de bulbi pt fiecare trandafir";
+			cin >> nr_bulbi;
+			cout << " Cate fire are un trandafir";
+			cin >> fire;
+			t = new Trandafir(1, denumire, numar, nr_bulbi, fire);
+			g=t;
+			L.adaugare(g);
+		}
+		else if (x == 1)
+		{
+			Crini *cr;
+			cout << "Dati tipul crinului [clasic /imperial]";
+			cin >> tip;
+			cout << "Dati culoare crinului";
+			cin >> culoare;
+			cr = new Crini(2, denumire, numar, tip, culoare);
+			g = cr;
+			L.adaugare(g);
+
+		}
+		else if (x == 2)
+		{
+			Brad *b;
+			cout << "Ce varsta are bradul ";
+			cin >> ani;
+			cout << "Ce inaltime are bradul ";
+			cin >> inaltime;
+			b = new Brad(3, denumire, numar,ani,inaltime );
+			g = b;
+			L.adaugare(g);
+
+		}
+		else if (x == 3)
+		{
+			Pomi *pm;
+			cout << "Din ce categorie fac parte ";
+			cin >> categorie;
+			cout << " De ce origine ii pomul dat ";
+			cin >> origine;
+			pm = new Pomi(4, denumire, numar, categorie, origine);
+			g = pm;
+			L.adaugare(g);
+		}
+} **/
+
+//modificarea unui pom dupa o categorie(mar, par, cires etc)
+void Lista::modificare(string cat)
+{
+	Gradina *el;
+	el = head;
+	Pomi *pm;
+	string d, c, o;
+	int n;
+	pm = (Pomi *)el;
+
+	if (!el)
+	{
+		cout << "Lista este vida ";
+
+
+		while (el)
+		{
+			
+			if (el->tip_derivat == 3 && pm->categorie == cat)   //daca tipul derivat e 3 adica pom si pointerul la categorie e egal cu cat( noua categorie) atunci se modifica
+			{
+
+				
+				cout << " Dati denumirea "; cin >> d;
+				cout << " Dati numarul de plante "; cin >> n;
+				cout << " Dati categoria pomilor "; cin >> c;
+				cout << " Dati originea pomilor "; cin >> o;
+
+				pm->denumire = d;
+				pm->numar = n;
+				pm->categorie = c;
+				pm->origine = o;
+			}
+			el = el->urm;
+		}
+	}
+}
+
+/**void Lista::ordonare()
+{
+	int k = 0;
+	Gradina *el;
+	el = head;
+	
+	Brad *m, *n;
+	int a, inal;
+	
+	
+
+	if (!el)
+	{
+		cout << "Lista e vida " << endl;
+
+	}
+	else
+		while (el)
+		{
+			if (el->inaltime< el->urm==inaltime)
+			{      
+			        k = 0;
+					aux = m;
+					m = n;
+					n = aux;
+
+				}
+				while (k);
+				
+
+			}
+		}
+}**/
+
+void Lista::fisier()
+{
+	Gradina *gr = head;
+	Trandafir *t;
+	Crini *cr;
+	Brad *b;
+	Pomi *p;
+	ofstream fis;
+	fis.open("Iesiri.txt");
+	if (fis.is_open())
+	{
+		while (gr)
+		{
+			if (gr->tip_derivat == 0)
+			{
+				t = (Trandafir*)gr;
+				fis << "Denumire" << t->denumire << endl;
+				fis << "Numar de plante" << t->numar << endl;
+				fis << "Numar bulbi" << t->nr_bulbi << endl;
+				fis << "Numarul de fire" << t->fire;
+			}
+			if (gr->tip_derivat == 1)
+			{
+				cr = (Crini*)gr;
+				fis << "Denumire" << cr->denumire << endl;
+				fis << "Numar de plante " << cr->numar << endl;
+				fis << "Tipul crinului" << cr->tip << endl;
+				fis << " Culoarea crinului" << cr->culoare << endl;
+
+			}
+			if (gr->tip_derivat == 2)
+			{
+				b = (Brad*)gr;
+				fis << "Denumire" << b->denumire << endl;
+				fis << "Numar de plante " << b->numar << endl;
+				fis << "Varsta bradului" << b->ani << endl;
+				fis << "Inaltimea bradului" << b->inaltime << endl;
+					
+			}
+			if (gr->tip_derivat == 3)
+			{
+				p = (Pomi*)gr;
+
+				fis << "Denumire" << p->denumire << endl;
+				fis << "Numar de plante " << p->numar << endl;
+				fis << "Categoria pomilor este" << p->categorie << endl;
+				fis << "Originea pomilor este" << p->origine << endl;
+			}
+			gr = gr->urm;
+		}
+		fis.close();
+	}
+	else
+	{
+		cout << "Nu s-a putut deschide fisierul";
+	}
+}
+
+
+   int main()
+{
+	int opt,n;
+	string cat;
+	Lista L;
+	L.head = NULL;
+	do {
+		cout << "\n1.Citire fisier" << endl;
+		cout << "2.Afisarea plantelor din gradina " << endl;
+		cout << "3. Afisarea pe categorie " << endl;
+		cout << "4.Stergerea obiectelor dupa numar " << endl;
+		//cout << "5.Salvarea obiectelor intr-un fisier distinct " << endl;
+		cout << "6.Modificarea pomilor dupa categorie" << endl;
+		//cout << "7.Ordonarea descrescatoare a brazilor dupa inaltime " << endl;
+		cout << "8.Salvarea obiectelor in fisier" << endl;
+		cout << "0.Iesire " << endl;
+		cout << "Dati o optiune ";
+		cin >> opt;
+		switch (opt)
+		{
+		case 0 : break;
+		case 1:
+			L.citire(L);
+			break;
+		case 2:
+			L.afisare();
+			break;
+		case 3:
+			L.afisare_categorie();
+			break;
+
+		case 4:
+			cout << "Dati numarul obiectului pe care doriti sa il stergeti" ;
+			cin >> n;
+			L.stergere(n);
+			break;
+		case 5:
+
+			break;
+		case 6:
+			cin.get();
+			cout << " Dati categoria obiectului pe care sa il modificam : \n ";
+			getline(cin,cat);
+			L.modificare(cat);
+			break;
+		 case 7 : 
+        break;
+		 case 8:
+			L.fisier();
+			break;
+
+
+		}
+
+	} while (1);
+
+	return 0;
+
+}
