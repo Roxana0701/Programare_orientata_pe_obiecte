@@ -582,10 +582,9 @@ void Lista::fisier()
 		cout << "2.Afisarea plantelor din gradina " << endl;
 		cout << "3. Afisarea pe categorie " << endl;
 		cout << "4.Stergerea obiectelor dupa numar " << endl;
-		//cout << "5.Salvarea obiectelor intr-un fisier distinct " << endl;
-		cout << "6.Modificarea pomilor dupa categorie" << endl;
-		//cout << "7.Ordonarea descrescatoare a brazilor dupa inaltime " << endl;
-		cout << "8.Salvarea obiectelor in fisier" << endl;
+		cout << "5.Modificarea pomilor dupa categorie" << endl;
+		//cout << "6.Ordonarea descrescatoare a brazilor dupa inaltime " << endl;
+		cout << "7.Salvarea obiectelor in fisier" << endl;
 		cout << "0.Iesire " << endl;
 		cout << "Dati o optiune ";
 		cin >> opt;
@@ -608,21 +607,14 @@ void Lista::fisier()
 			L.stergere(n);
 			break;
 		case 5:
-
-			break;
-		case 6:
 			cin.get();
 			cout << " Dati categoria obiectului pe care sa il modificam : \n ";
 			getline(cin,cat);
 			L.modificare(cat);
 			break;
-		 case 7 : 
-        break;
-		 case 8:
+		 case 7:
 			L.fisier();
 			break;
-
-
 		}
 
 	} while (1);
