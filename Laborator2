@@ -1,0 +1,60 @@
+/*După exemplele prezentate să se modifice programul astfel încât iniţierea atributelor
+unui obiect de tip Student (nume, rol, adresa, cod postal) să se facă în constructor. Să
+se creeze şi un destructor care se va apela explicit. Constructorul va primi ca parametri
+cele patru valori. */
+
+#include <iostream>
+#include<conio.h>
+#include<string>
+
+using namespace std;
+
+class Student {
+
+	string nume;
+	string rol;
+	string adresa;
+	int cod;
+public:
+	Student();
+	~Student();
+	void citire();
+	void afisare();
+
+};
+Student::Student()
+{
+	cout << "Constructor :Informatii generale despre student:" << endl;
+
+}
+void Student::citire()
+{
+	cout << "Numele studentului este :";
+	cin >> nume;
+	cout << "Rolul sau este :";
+	cin >> rol;
+	cout << "Adresa studentului este :";
+	cin >> adresa;
+	cout << "Codul postal: ";
+	cin >> cod;
+}
+void Student::afisare()
+{
+	cout << " Nume student: " << nume << endl;
+	cout << " Rolul studentului: " << rol << endl;
+	cout << " Adresa student: " << adresa << endl;
+	cout << " Codul postal:" << cod << endl;
+}
+Student::~Student()
+{
+	cout << "Distructor: memoria a fost eliberata";
+}
+
+int main()
+{
+	Student s;
+	s.citire();
+	s.afisare();
+	_getch();
+	return 0;
+}
