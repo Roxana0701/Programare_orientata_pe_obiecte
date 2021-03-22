@@ -1,0 +1,282 @@
+//Prezentati o clasă de bază Persoana și doua clase derivate Angajat si Student. Programul conține o matrice de obiecte asupra căreia se pot face diferite
+operații de adăugare, afișare, căutare și ștergere.
+
+#include <iostream>
+#include<string.h>
+
+using namespace std;
+ class Persoana{
+
+ string nume, prenume;
+ unsigned int varsta;
+ public:
+     Persoana(){}
+     Persoana(string nume,string prenume, unsigned int varsta)
+     {
+         Persoana::nume=nume;
+         Persoana::prenume= prenume;
+         Persoana::varsta=varsta;
+     }
+     void afisare()
+     {
+         cout<<"......."<<endl;
+         cout<<"Nume:"<<Persoana::nume<<endl;
+         cout<<"Prenume:"<<Persoana::prenume<<endl;
+         cout<<"Varsta:"<<Persoana::varsta<<endl;
+
+     }
+     string returnareNume()
+     {
+
+         return Persoana::nume;
+
+     }
+
+     string returnarePrenume()
+     {
+         return Persoana::prenume;
+     }
+     };
+
+     class Angajat: public Persoana{
+     unsigned int salar;
+     string departament;
+  public:
+
+    Angajat(){}
+    Angajat(string nume, string prenume, unsigned int varsta, string departament , unsigned int salar): Persoana(nume,prenume,varsta)
+    {
+        Angajat::departament = departament;
+        Angajat::salar = salar;
+    }
+    void afisare()
+    {
+        Persoana::afisare();
+        cout<<"Departament"<<Angajat::departament<<endl;
+        cout<<"Salar"<<Angajat::salar<<endl;
+    }
+    };
+
+    class Student: public Persoana{
+        string departament;
+    public:
+        Student(){}
+        Student(string nume, string prenume , unsigned int varsta , string departament ): Persoana(nume,prenume,varsta)
+        {
+            Student::departament=departament;
+        }
+        void afisare()
+        {
+            Persoana::afisare();
+            cout<<"Departament"<<Student::departament<<endl;
+        }
+    };
+     class Licenta: public Student{
+     unsigned int nota;
+
+ public :
+    Licenta(){}
+    Licenta(string nume, string prenume, unsigned int varsta , string departament, unsigned int nota): Student(nume, prenume,varsta,departament){
+
+    Licenta::nota=nota;
+
+    }
+    void afisare(){
+        Student::afisare();
+        cout<<"Nota studentului de la licenta este:"<<Licenta::nota;
+        }
+
+     };
+    class Inginer: public Angajat{
+        unsigned int vechime;
+
+    public:
+        Inginer(){};
+        Inginer(string nume, string prenume, unsigned int varsta , string departament, int salar, int vechime): Angajat(nume, prenume,varsta,departament,salar)
+        {
+            Inginer::vechime=vechime;
+        }
+        void afisare()
+        {
+            Inginer ::afisare();
+            cout<<"Vechimea inginerului este "<<Inginer::vechime<<endl;
+        }
+
+    };
+    class Profesor: public Angajat{
+        string domeniu;
+    public:
+        Profesor(){}
+        Profesor(string nume, string prenume, unsigned int varsta , string departament,int salar, string domeniu): Angajat(nume, prenume,varsta,departament,salar)
+        {
+
+           Profesor::domeniu=domeniu;
+
+        }
+        void afisare()
+        {
+           Profesor::afisare();
+
+            cout<<"Domeniul profesorului este "<<Profesor::domeniu<<endl;
+        }
+
+    };
+
+
+
+
+
+int main()
+{
+    string n,p,d,pren;
+    string num;
+    int v,s,ok=0,ok2=0;
+    int tip;
+    Angajat angajati[20];
+    unsigned int nr;
+    int opt;
+    string nu,pr,de,pre;
+          string numm;
+          int var,k=0,k2=0;
+
+         Student studenti [30];
+         int opt2;
+    cout<<"ce tip de persoana doriti? (0-student,1-angajat)";
+    cin>>tip;
+     if(tip!=0)
+     {
+
+
+    do{
+        cout<<"1.introducere angajati"<<endl;
+        cout<<"2.Adaugare angajati"<<endl;
+        cout<<"3.Cautare angajati"<<endl;
+        cout<<"4.Stergere angajati"<<endl;
+        cout<<"0.iesire angajati"<<endl;
+        cout<<"optiune angajati"<<endl;
+         cin>>opt;
+         switch(opt)
+         {
+         case 1:
+            cout<<"dati nr de angajati";
+            cin>>nr;
+            for(int i=0;i<nr;i++)
+            {
+                cin.get();
+                cout<<"Dati nume: "; getline(cin,n);
+                cout<<"Dati prenume: "; getline(cin,p);
+                cout<<"Dati varsta: "; cin>>v;
+                cin.get();
+                cout<<"Dati departamrent: "; getline(cin, d);
+                cout<<"Dati salar: "; cin>>s;
+                angajati[i]=Angajat(n,p,v,d,s);
+            }
+            break;
+         case 2:
+            for( int i=0;i<nr; i++)
+                angajati[i].afisare();
+            break;
+         case 3:
+            cin.get();
+            cout<<"dati numele cautat"; getline(cin,num);
+            for( int i=0;i<nr; i++)
+                if(num.compare(angajati[i].returnareNume())==0)
+            {
+                cout<<"am gasit angajat"<<endl;
+                ok=1;
+            }
+             if(ok==0)
+                cout<<"angajatul nu a fost gasit";
+             break;
+         case 4:
+            cout<<"dati prenumele care doriti sa l stergeti ";
+            getline(cin,pren);
+            for( int i=0;i<nr; i++)
+            if(pren.compare(angajati[i].returnarePrenume())==0)
+            {
+                for(int j=i;j<nr;j++)
+                    angajati[j]=angajati[j+1];
+                nr--;
+                ok2=1;
+                cout<<"datele au fost sterse";
+
+            }
+            if(ok2==0)
+                cout<<"nu a fost gasit"<<pren;
+            break;
+            case 0:break;
+
+            }
+
+         }while(opt!=0);
+     }
+     else{
+
+    do{
+        cout<<"1.introducere studenti "<<endl;
+        cout<<"2.Adaugare studenti"<<endl;
+        cout<<"3.Cautare studenti"<<endl;
+        cout<<"4.Stergere studenti"<<endl;
+        cout<<"0.iesire studenti"<<endl;
+        cout<<"optiune studenti"<<endl;
+         cin>>opt2;
+         switch(opt2)
+         {
+             case 1:
+            cout<<"dati nr de studenti ";
+            cin>>nr;
+            for(int i=0;i<nr;i++)
+            {
+                cin.get();
+                cout<<"Dati nume: "; getline(cin,nu);
+                cout<<"Dati prenume: "; getline(cin,pr);
+                cout<<"Dati varsta: "; cin>>var;
+                cin.get();
+                cout<<"Dati departamrent"; getline(cin, de);
+                studenti[i]=Student(nu,pr,var,de);
+            }
+            break;
+         case 2:
+            for( int i=0;i<nr; i++)
+                studenti[i].afisare();
+            break;
+         case 3:
+            cin.get();
+            cout<<"dati numele cautat"; getline(cin,numm);
+            for( int i=0;i<nr; i++)
+                if(numm.compare(studenti[i].returnareNume())==0)
+            {
+                cout<<"am gasit studentul"<<endl;
+                k=1;
+            }
+             if(k==0)
+                cout<<"studentul nu a fost gasit";
+             break;
+         case 4:
+            cout<<"dati prenumele care doriti sa l stergeti";
+            getline(cin,pre);
+            for( int i=0;i<nr; i++)
+            if(pre.compare(studenti[i].returnarePrenume())==0)
+            {
+                for(int j=i;j<nr;j++)
+                    studenti[j]=studenti[j+1];
+                nr--;
+                k2=1;
+                cout<<"datele au fost sterse";
+
+            }
+            if(k2==0)
+                cout<<"nu a fost gasit"<<pre;
+            break;
+            case 0:break;
+
+            }
+
+         }while(opt2!=0);
+
+        }
+
+         return 0;
+    }
+
+
