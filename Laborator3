@@ -1,0 +1,88 @@
+//Să se realizeze două clase: Clasa Sofer, Clasa Masina. Clasa Sofer va conține următoarele variabile: nume sofer, cnp, varsta, adresa
+//Clasa Mașina va conține următoarele variabile: producător, model, an fabricație, sofer. Se vor crea pentru cele două clase funcții de citire și de afișare.
+
+
+#define _CRT_SECURE_NO_WARNING
+#include <iostream>
+#include <conio.h>
+#include <string.h>
+
+   using namespace std;
+   class Sofer {
+       char nume[20],adresa[50];
+       int varsta, CNP;
+   public:
+
+   void citire(char *num,int c , char *ad ,int v )
+   {
+       strcpy(nume,num);
+       CNP=c ;
+       strcpy(adresa,ad);
+       varsta=v;
+   }
+
+   void afisare()
+   {
+
+       cout<<endl<<" Numele soferului "<<nume<<endl;
+       cout<<" CNP soferului "<<CNP<<endl;
+       cout<<" Adresa soferului "<<adresa<<endl;
+       cout<<"Varsta soferului "<<varsta<<endl;
+
+   }
+   };
+   class Masina{
+       char producator[50],model[50], n_sofer[50];
+       int an;
+   public:
+    void citire(char *prod, char *mod, char *so, int a)
+    {
+        strcpy(producator, prod);
+        strcpy(model,mod);
+        strcpy(n_sofer,so);
+        an=a;
+
+    }
+    void afisare()
+    {
+        cout<<endl<<"Nume producator "<<producator<<endl;
+        cout<<"Modelul masinii"<<model<<endl;
+        cout<<"Soferul masinii este :"<<n_sofer<<endl;
+        cout<<"Anul de fabricare al masinii :"<<an<<endl;
+
+
+    }
+   };
+
+int main()
+{
+    Sofer date;
+    Masina ma;
+    char nume[50],adresa[50];
+    char producator[50], model[50],n_sofer[50];
+    int varsta,CNP,an;
+           cout<<"Numele soferului:";
+           cin>>nume;
+           cout<<"CNP:";
+           cin>>CNP;
+           cout<<"Adresa soferului :";
+           cin>>adresa;
+           cout<<"Varsta sofer:";
+           cin>>varsta;
+            date.citire(nume,CNP,adresa,varsta);
+            date.afisare();
+
+            cout<<endl<<"Numele producatorului:";
+            cin>>producator;
+            cout<<"Modelul masinii este:";
+            cin>>model;
+            cout<<"Soferul masinii este :";
+            cin>>n_sofer;
+            cout<<"Anul de fabricare al autoobilului :";
+            cin>>an;
+            ma.citire(producator,model,n_sofer,an);
+            ma.afisare();
+
+
+    return 0;
+}
